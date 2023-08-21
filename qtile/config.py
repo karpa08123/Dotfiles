@@ -66,7 +66,7 @@ keys = [
     Key((), "XF86AudioMicMute", lazy.spawn("amixer sset Capture toggle")),
 
     KeyChord([mod], "z", [
-        Key([], "r", lazy.spawn("rofi -show run"), desc="Spawn rofi in run mode"),
+        Key([], "r", lazy.spawn("rofi -show drun"), desc="Spawn rofi in run mode"),
         Key([], "f", lazy.spawn("rofi -show filebrowser"), desc="Spawn rofi in file mode"),
         Key([], "c", lazy.spawn("rofi -show calc"), desc="Spawn rofi in calculator mode")
     ])
