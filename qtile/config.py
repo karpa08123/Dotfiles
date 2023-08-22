@@ -69,7 +69,10 @@ keys = [
         Key([], "r", lazy.spawn("rofi -show drun"), desc="Spawn rofi in run mode"),
         Key([], "f", lazy.spawn("rofi -show filebrowser"), desc="Spawn rofi in file mode"),
         Key([], "c", lazy.spawn("rofi -show calc"), desc="Spawn rofi in calculator mode")
-    ])
+    ]),
+    
+    #Lockscreen
+    Key([mod], "l", lazy.spawn("i3lock -i Imágenes/Wallpapers/Unmodified/animeLighthouse.png"), desc="Lockscreen")
 
 ]
 
@@ -118,7 +121,7 @@ layouts = [
         name='Columns',
         **layout_theme
         ),
-    #layout.Floating(),
+    layout.Floating(name='Floating', **layout_theme),
     layout.Max(name='Max')
 ]
 
@@ -138,6 +141,10 @@ decor={
                                )
             ]}
 
+######################## Mouse callbacks #####################################
+#def open_WifiSelect(qtile):
+#    qtile.cmd_spawn('alacritty')
+
 ######################### Bar ################################################
 screens = [
     Screen(
@@ -146,7 +153,12 @@ screens = [
 
 ########################## WIDGETS ###########################################
         top=bar.Bar([
-                widget.Image(filename='~/.config/qtile/manjaro.256x256.png',scale='false', margin=3,),
+                widget.Image(filename='~/.config/qtile/manjaro.256x256.png',
+                            scale='false',
+                            margin=3,
+                            mouse_callbacks = {'Button1' : lazy.spawn('alacritty -e wifiSelect') }
+                ),
+
                 widget.Sep(background='0a0914', linewidth=0,
                            decorations=[
                                PowerLineDecoration(
@@ -154,11 +166,14 @@ screens = [
                                    )
                                ]
                            ),
+
                 widget.GroupBox(highlight_method='line',
                                 background='9c2932',
                                 highlight_color=['cf3540','cf3540'],
                                 ),
+
                 widget.CurrentLayout(background='9c2932'),
+
                 widget.Sep(background='9c2932', linewidth=0,
                            decorations=[
                                PowerLineDecoration(
@@ -167,7 +182,9 @@ screens = [
                                    )
                                ]
                            ),
+
                 widget.WindowTabs(background='0a0914'),
+
                 widget.Sep(background='0a0914',
                            linewidth=0,
                            decorations=[
@@ -177,7 +194,10 @@ screens = [
                                    )
                                ]
                            ),
-                widget.WiFiIcon(interface='wlp4s0',background='9c2932'),
+
+                widget.WiFiIcon(interface='wlp4s0',
+                                background='9c2932',
+                ),
                 widget.Sep(background='9c2932', linewidth=0, **decor),
                 widget.UPowerWidget(background='cf3540'),
                 widget.Sep(background='cf3540', linewidth=0, **decor),
