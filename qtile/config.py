@@ -63,7 +63,10 @@ keys = [
     ]),
     
     #Lockscreen
-    Key([mod], "l", lazy.spawn("i3lock -i Imágenes/Wallpapers/Unmodified/animeLighthouse.png"), desc="Lockscreen")
+    Key([mod], "l", lazy.spawn("i3lock -i Imágenes/Wallpapers/Unmodified/animeLighthouse.png"), desc="Lockscreen"),
+
+    #change keyboard layout
+    Key([mod], "space", lazy.widget["keyboardlayout"].next_keyboard(), desc="Change keyboard layout.")
 
 ]
 
@@ -172,6 +175,11 @@ screens = [
                            ),
 
                 widget.WindowTabs(background='0a0914'),
+
+                widget.KeyboardLayout(
+                    configured_keyboards=['us','es'],
+                          foreground='0a0914'
+                ), #it's hided bc this ^^^^
 
                 widget.Systray(background='0a0914'),
 
