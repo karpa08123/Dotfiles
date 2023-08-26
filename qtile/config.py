@@ -173,6 +173,8 @@ screens = [
 
                 widget.WindowTabs(background='0a0914'),
 
+                widget.Systray(background='0a0914'),
+
                 widget.Sep(background='0a0914',
                            linewidth=0,
                            decorations=[
