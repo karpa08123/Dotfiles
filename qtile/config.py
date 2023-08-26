@@ -23,37 +23,28 @@ keys = [
     Key([mod], "Right", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "Down", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "Up", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
-
-    # Move windows. Move windows to a unexisting place will generate new rows/columns
     Key([mod, "shift"], "Left", lazy.layout.shuffle_left(), desc="Move window to the left"),
     Key([mod, "shift"], "Right", lazy.layout.shuffle_right(), desc="Move window to the right"),
     Key([mod, "shift"], "Down", lazy.layout.shuffle_down(), desc="Move window down"),
     Key([mod, "shift"], "Up", lazy.layout.shuffle_up(), desc="Move window up"),
-
-    # Grow windows. If current window is on the edge of screen and direction
-    # will be to screen edge - window would shrink.
-    Key([mod, "control"], "Left", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([mod, "control"], "Right", lazy.layout.grow_right(), desc="Grow window to the right"),
-    Key([mod, "control"], "Down", lazy.layout.grow_down(), desc="Grow window down"),
-    Key([mod, "control"], "Up", lazy.layout.grow_up(), desc="Grow window up"),
-    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
-    
-    Key([mod, "shift"], "Return", lazy.layout.toggle_split(), desc="Toggle between split and unsplit sides of stack",),
+    Key([mod, "control"], "Up", lazy.layout.grow(), desc="Grow window"),
+    Key([mod, "control"], "Down", lazy.layout.shrink(), desc="Shrink windoww"),
 
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([mod, "shift"], "Tab", lazy.prev_layout(), desc="Toggle between layouts in reverse"),
+
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([mod, "control"], "q", lazy.spawn("rofi -show power-menu -modi power-menu:~/.config/rofi/rofi-power-menu"), desc="Power options"),
+    Key([mod], "p", lazy.spawn("~/.config/rofi/monitor_layout.sh | rofi -run"), desc="Change monitor layout"), #This one doesn't work
 
     #Volume control
     Key((), "XF86AudioRaiseVolume", lazy.spawn("amixer sset Master 2%+")),
     Key((), "XF86AudioLowerVolume", lazy.spawn("amixer sset Master 2%-")),
     Key((), "XF86AudioMute", lazy.spawn("amixer sset Master toggle")),
-    #Debes averiguar como configurar la tecla para mutear el audio. idea: XF86
 
     #Brightness control
     Key((), "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
@@ -81,11 +72,11 @@ groups = []
 
 groups_names = ["1","2","3","4","5"]
 
-group_labels = ["</>", "@", "CHAT", "FILES", "EXTRA"]
+group_labels = [">_", "@", "CHAT", "FILES", "EXTRA"]
 #group_labels = ["1", "2", "3", "4", "5"]
 
 
-group_layouts = ["columns", "max", "max", "columns", "columns"]
+group_layouts = ["MonadTall", "Max", "MonadTall", "MonadTall", "MonadTall"]
 
 for i in range(len(groups_names)):
     groups.append(
@@ -115,14 +106,10 @@ layout_theme={
     'border_on_single':False
 }
 
-# nota 15/08/23 16:25 : Deberias experimentar con mas layouts diferentes. Suena muy interesante pero por ahora prefieres no hacerlo.
 layouts = [
-    layout.Columns(
-        name='Columns',
-        **layout_theme
-        ),
+    layout.MonadTall(name='MonadTall', **layout_theme),
+    layout.Max(name='Max'),
     layout.Floating(name='Floating', **layout_theme),
-    layout.Max(name='Max')
 ]
 
 widget_defaults = dict(
@@ -130,6 +117,7 @@ widget_defaults = dict(
     fontsize=12,
     padding=3,
     opacity=0.0)
+
 extension_defaults = widget_defaults.copy()
 
 decor={
