@@ -9,8 +9,8 @@
     background-color:            #0a0914;
     border-color:                #cf000f;
     text-color:                  #f0c8a8;
-    font:                        "Sauce Code Pro";
-    prompt-font:                 "Sauce Code Pro";
+    font:                        "JetBrains Mono regular";
+    prompt-font:                 "JetBrains Mono regular";
     prompt-background:           #0a0914;
     prompt-foreground:           #f0c8a8;
     prompt-padding:              4px;

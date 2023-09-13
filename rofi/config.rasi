@@ -1,6 +1,6 @@
 configuration{
 modes: "window,drun,run,ssh,calc,filebrowser";
-font: "Source Code Pro";
+font: "JetBrains Mono regular";
       combi-modes: "window,run,calc,filebrowser";
       filebrowser {
 	      directories-first: true;

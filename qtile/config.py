@@ -38,8 +38,18 @@ keys = [
 
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, "control"], "q", lazy.spawn("rofi -show power-menu -modi power-menu:~/.config/rofi/rofi-power-menu"), desc="Power options"),
-    Key([mod], "p", lazy.spawn("~/.config/rofi/monitor_layout.sh | rofi -run"), desc="Change monitor layout"), #This one doesn't work
+
+    Key([mod, "control"], 'q', lazy.run_extension(extension.CommandSet(
+    commands={
+        'shutdown': 'shutdown -P now',
+        'Reboot': 'shutdown -r now',
+        'LockScreen': 'i3lock -i Imágenes/Wallpapers/Unmodified/animeLighthouse.png',
+        })), desc="Power option"),
+
+    Key([mod], "p", lazy.spawn("monitor_layout.sh"), desc="Change monitor layout"), #This one doesn't work
+    
+    #Shutdown?
+    Key([mod, "control"], "End", lazy.shutdown(), desc="Shutdown Qtile"),
 
     #Volume control
     Key((), "XF86AudioRaiseVolume", lazy.spawn("amixer sset Master 2%+")),
@@ -56,8 +66,9 @@ keys = [
     #Mic mute
     Key((), "XF86AudioMicMute", lazy.spawn("amixer sset Capture toggle")),
 
+    Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Run apps"),
+
     KeyChord([mod], "z", [
-        Key([], "r", lazy.spawn("rofi -show drun"), desc="Spawn rofi in run mode"),
         Key([], "f", lazy.spawn("rofi -show filebrowser"), desc="Spawn rofi in file mode"),
         Key([], "c", lazy.spawn("rofi -show calc"), desc="Spawn rofi in calculator mode")
     ]),
@@ -66,7 +77,18 @@ keys = [
     Key([mod], "l", lazy.spawn("i3lock -i Imágenes/Wallpapers/Unmodified/animeLighthouse.png"), desc="Lockscreen"),
 
     #change keyboard layout
-    Key([mod], "space", lazy.widget["keyboardlayout"].next_keyboard(), desc="Change keyboard layout.")
+    Key([mod], "space", lazy.widget["keyboardlayout"].next_keyboard(), desc="Change keyboard layout."),
+
+    #dmenu
+    Key([mod], 'm', lazy.run_extension(extension.CommandSet(
+    commands={
+        'Bluetooth': 'dmenu-bluetooth prompt',
+        'Wifi On': 'nmcli radio wifi on',
+        'Wifi Off': 'nmcli radio wifi off',
+        'open': 'urxvt -e mocp',
+        'shuffle': 'mocp -t shuffle',
+        'repeat': 'mocp -t repeat',
+        })))
 
 ]
 
@@ -75,8 +97,8 @@ groups = []
 
 groups_names = ["1","2","3","4","5"]
 
-group_labels = [">_", "@", "CHAT", "FILES", "EXTRA"]
-#group_labels = ["1", "2", "3", "4", "5"]
+#group_labels = [">_", "@", "CHAT", "FILES", "EXTRA"]
+group_labels = ["1", "2", "3", "4", "5"]
 
 
 group_layouts = ["MonadTall", "Max", "MonadTall", "MonadTall", "MonadTall"]
@@ -116,7 +138,7 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="Source Code Pro",
+    font="JetBrains Mono regular",
     fontsize=12,
     padding=3,
     opacity=0.0)
@@ -144,20 +166,6 @@ screens = [
 
 ########################## WIDGETS ###########################################
         top=bar.Bar([
-                widget.Image(filename='~/.config/qtile/manjaro.256x256.png',
-                            scale='false',
-                            margin=3,
-                            mouse_callbacks = {'Button1' : lazy.spawn('alacritty -e wifiSelect') }
-                ),
-
-                widget.Sep(background='0a0914', linewidth=0,
-                           decorations=[
-                               PowerLineDecoration(
-                                   path='rounded_right' 
-                                   )
-                               ]
-                           ),
-
                 widget.GroupBox(highlight_method='line',
                                 background='9c2932',
                                 highlight_color=['cf3540','cf3540'],
@@ -178,7 +186,8 @@ screens = [
 
                 widget.KeyboardLayout(
                     configured_keyboards=['us','es'],
-                          foreground='0a0914'
+                    background='0a0914',
+                          foreground='ffffff'
                 ), #it's hided bc this ^^^^
 
                 widget.Systray(background='0a0914'),
